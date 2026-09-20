@@ -1,237 +1,721 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head    }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Desmond</title>
 
-    #clock {
-      text-align: center;
-      font-size: 18px;
-      color: #7fc8ff;
-      padding: 15px;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    main {
-      max-width: 650px;
-      margin: auto;
-      padding: 15px;
-    }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #07111f;
+  color: white;
+  min-height: 100vh;
+}
 
-    #chat {
-      height: 400px;
-      overflow-y: auto;
-      background: #101d30;
-      border: 1px solid #284766;
-      border-radius: 12px;
-      padding: 15px;
-    }
+.app {
+  width: 100%;
+  max-width: 850px;
+  margin: auto;
+  padding: 20px;
+}
 
-    .message {
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 10px;
-      line-height: 1.5;
-      white-space: pre-wrap;
-    }
+header {
+  background: linear-gradient(135deg, #102c50, #174d83);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 0 25px #0008;
+  margin-bottom: 20px;
+}
 
-    .desmond {
-      background: #173b61;
-      border-left: 4px solid #39a5ff;
-    }
+header h1 {
+  margin: 0;
+  font-size: 30px;
+  letter-spacing: 1px;
+}
 
-    .user {
-      background: #293344;
-      border-left: 4px solid #9caac0;
-    }
+header p {
+  color: #b8d9ff;
+  margin-bottom: 0;
+}
 
-    .label {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
+#clock {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #8bd5ff;
+  font-weight: bold;
+}
 
-    .input-area {
-      display: flex;
-      gap: 8px;
-      margin-top: 15px;
-    }
+.panel {
+  background: #101f33;
+  border: 1px solid #294665;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 0 15px #0005;
+}
 
-    #userInput {
-      flex: 1;
-      min-width: 0;
-      padding: 14px;
-      border: 1px solid #45617d;
-      border-radius: 8px;
-      background: #17263a;
-      color: white;
-      font-size: 16px;
-    }
+.panel h2 {
+  margin-top: 0;
+  color: #8bd5ff;
+}
 
-    button {
-      padding: 12px 18px;
-      border: none;
-      border-radius: 8px;
-      background: #1683d8;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
+#chat {
+  height: 360px;
+  overflow-y: auto;
+  background: #07111f;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 15px;
+}
 
-    button:hover {
-      background: #35a4ff;
-    }
+.message {
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
 
-    .quick-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 15px;
-    }
+.user {
+  background: #164b78;
+  margin-left: 15%;
+}
 
-    .quick-buttons button {
-      background: #24476b;
-      font-size: 13px;
-    }
+.desmond {
+  background: #1d2d42;
+  margin-right: 10%;
+}
 
-    footer {
-      text-align: center;
-      color: #7893ad;
-      padding: 20px;
-      font-size: 12px;
-    }
-  </style>
+.sender {
+  font-weight: bold;
+  color: #8bd5ff;
+  margin-bottom: 5px;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+}
+
+input, textarea, select {
+  width: 100%;
+  background: #07111f;
+  color: white;
+  border: 1px solid #3c5d7d;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 15px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+button {
+  background: #1878c9;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #2498f0;
+}
+
+button.secondary {
+  background: #263c55;
+}
+
+button.danger {
+  background: #9c3030;
+}
+
+.tools {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.tool-button {
+  min-height: 50px;
+}
+
+.hidden {
+  display: none;
+}
+
+.item {
+  background: #1b3048;
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 8px;
+  white-space: pre-wrap;
+}
+
+.item button {
+  float: right;
+  padding: 5px 9px;
+  font-size: 12px;
+}
+
+.status {
+  color: #8bd5ff;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+footer {
+  text-align: center;
+  color: #718ca8;
+  font-size: 13px;
+  padding: 20px;
+}
+
+@media (max-width: 500px) {
+  .app {
+    padding: 10px;
+  }
+
+  header h1 {
+    font-size: 24px;
+  }
+
+  .input-row {
+    flex-direction: column;
+  }
+
+  .tools {
+    grid-template-columns: 1fr;
+  }
+
+  #chat {
+    height: 320px;
+  }
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <h1>PROJECT DESMOND</h1>
-    <p>Your personal AI assistant</p>
-  </header>
 
+<div class="app">
+
+<header>
+  <h1>PROJECT DESMOND</h1>
+  <p>Your personal AI assistant and digital companion.</p>
   <div id="clock">Loading time...</div>
+</header>
 
-  <main>
-    <div id="chat">
-      <div class="message desmond">
-        <div class="label">Desmond</div>
-        Hello, Troy. My first prototype is online. What can I help you with?
-      </div>
+<section class="panel">
+  <h2>Desmond Chat</h2>
+
+  <div id="chat">
+    <div class="message desmond">
+      <div class="sender">DESMOND</div>
+      Hello, Troy. My interface is online. What can I help you with?
     </div>
+  </div>
 
-    <div class="input-area">
-      <input
-        id="userInput"
-        type="text"
-        placeholder="Talk to Desmond..."
-        autocomplete="off"
-      >
-      <button onclick="sendMessage()">Send</button>
-    </div>
+  <div class="input-row">
+    <input
+      id="userInput"
+      type="text"
+      placeholder="Talk to Desmond..."
+      autocomplete="off"
+    >
+    <button onclick="sendMessage()">Send</button>
+  </div>
 
-    <div class="quick-buttons">
-      <button onclick="ask('What time is it?')">Time</button>
-      <button onclick="ask('Hello Desmond')">Say hello</button>
-      <button onclick="ask('Calculate 25 + 17')">Calculator</button>
-    </div>
-  </main>
+  <div class="status">
+    Prototype mode — AI connection has not been added yet.
+  </div>
+</section>
 
-  <footer>
-    Project Desmond v0.1 — Prototype
-  </footer>
+<section class="panel">
+  <h2>Quick Tools</h2>
 
-  <script>
-    const chat = document.getElementById("chat");
-    const userInput = document.getElementById("userInput");
+  <div class="tools">
+    <button class="tool-button" onclick="tellTime()">Time</button>
+    <button class="tool-button" onclick="showMemories()">Memory</button>
+    <button class="tool-button" onclick="showNotes()">Notes</button>
+    <button class="tool-button" onclick="showReminders()">Reminders</button>
+    <button class="tool-button" onclick="showCalculator()">Calculator</button>
+    <button class="tool-button" onclick="clearChat()">Clear Chat</button>
+  </div>
+</section>
 
-    function updateClock() {
-      const now = new Date();
+<section class="panel">
+  <h2>Memory</h2>
 
-      document.getElementById("clock").textContent =
-        "Current time: " + now.toLocaleTimeString();
+  <input
+    id="memoryInput"
+    type="text"
+    placeholder="Something for Desmond to remember..."
+  >
+
+  <br><br>
+
+  <button onclick="saveMemory()">Save Memory</button>
+  <button class="secondary" onclick="showMemories()">View Memories</button>
+  <button class="danger" onclick="clearMemories()">Clear Memories</button>
+
+  <div id="memoryList"></div>
+</section>
+
+<section class="panel">
+  <h2>Notes</h2>
+
+  <textarea
+    id="noteInput"
+    placeholder="Write a note..."
+  ></textarea>
+
+  <br><br>
+
+  <button onclick="saveNote()">Save Note</button>
+
+  <div id="noteList"></div>
+</section>
+
+<section class="panel">
+  <h2>Reminders</h2>
+
+  <input
+    id="reminderInput"
+    type="text"
+    placeholder="What should Desmond remind you about?"
+  >
+
+  <br><br>
+
+  <input
+    id="reminderTime"
+    type="datetime-local"
+  >
+
+  <br><br>
+
+  <button onclick="saveReminder()">Save Reminder</button>
+
+  <div id="reminderList"></div>
+</section>
+
+<section class="panel">
+  <h2>Calculator</h2>
+
+  <input
+    id="calculatorInput"
+    type="text"
+    placeholder="Example: 25 * 4"
+  >
+
+  <br><br>
+
+  <button onclick="calculate()">Calculate</button>
+
+  <div id="calculatorResult" class="item hidden"></div>
+</section>
+
+<footer>
+  Project Desmond v0.2 — Prototype
+</footer>
+
+</div>
+
+<script>
+/* =========================
+   DATA STORAGE
+========================= */
+
+let memories = JSON.parse(
+  localStorage.getItem("desmondMemories") || "[]"
+);
+
+let notes = JSON.parse(
+  localStorage.getItem("desmondNotes") || "[]"
+);
+
+let reminders = JSON.parse(
+  localStorage.getItem("desmondReminders") || "[]"
+);
+
+function saveData() {
+  localStorage.setItem("desmondMemories", JSON.stringify(memories));
+  localStorage.setItem("desmondNotes", JSON.stringify(notes));
+  localStorage.setItem("desmondReminders", JSON.stringify(reminders));
+}
+
+/* =========================
+   CLOCK
+========================= */
+
+function updateClock() {
+  const now = new Date();
+
+  document.getElementById("clock").textContent =
+    "Current time: " + now.toLocaleTimeString();
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+
+/* =========================
+   CHAT
+========================= */
+
+function addMessage(sender, text, type) {
+  const chat = document.getElementById("chat");
+
+  const message = document.createElement("div");
+  message.className = "message " + type;
+
+  const senderLabel = document.createElement("div");
+  senderLabel.className = "sender";
+  senderLabel.textContent = sender.toUpperCase();
+
+  const content = document.createElement("div");
+  content.textContent = text;
+
+  message.appendChild(senderLabel);
+  message.appendChild(content);
+
+  chat.appendChild(message);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function sendMessage() {
+  const input = document.getElementById("userInput");
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  addMessage("Troy", text, "user");
+  input.value = "";
+
+  const lower = text.toLowerCase();
+  let response = "";
+
+  if (
+    lower.startsWith("remember that ") ||
+    lower.startsWith("remember ")
+  ) {
+    const memory = text
+      .replace(/^remember that /i, "")
+      .replace(/^remember /i, "")
+      .trim();
+
+    if (!memories.includes(memory)) {
+      memories.push(memory);
+      saveData();
+      response = "I've saved that to my memory, Troy.";
+    } else {
+      response = "I already have that saved.";
     }
 
-    setInterval(updateClock, 1000);
-    updateClock();
+  } else if (
+    lower.includes("what do you remember") ||
+    lower.includes("show my memories")
+  ) {
+    response = getMemoryText();
 
-    function addMessage(sender, text, type) {
-      const message = document.createElement("div");
-      message.className = "message " + type;
+  } else if (lower.includes("what time")) {
+    response = "The current time is " +
+      new Date().toLocaleTimeString() + ".";
 
-      const label = document.createElement("div");
-      label.className = "label";
-      label.textContent = sender;
+  } else if (lower.startsWith("calculate ")) {
+    const expression = text.substring(10).trim();
+    response = calculateExpression(expression);
 
-      const content = document.createElement("div");
-      content.textContent = text;
+  } else if (lower === "hello" || lower.includes("hello desmond")) {
+    response = "Hello, Troy. Systems are running.";
 
-      message.appendChild(label);
-      message.appendChild(content);
-      chat.appendChild(message);
+  } else if (lower.includes("how are you")) {
+    response = "All systems operational. How are you doing?";
 
-      chat.scrollTop = chat.scrollHeight;
-    }
+  } else {
+    response =
+      "I understand your message, Troy. " +
+      "My full OpenAI connection is not connected yet.";
+  }
 
-    function ask(text) {
-      userInput.value = text;
+  setTimeout(function() {
+    addMessage("Desmond", response, "desmond");
+  }, 300);
+}
+
+document.getElementById("userInput").addEventListener(
+  "keydown",
+  function(event) {
+    if (event.key === "Enter") {
       sendMessage();
     }
+  }
+);
 
-    function sendMessage() {
-      const text = userInput.value.trim();
+/* =========================
+   TIME
+========================= */
 
-      if (text === "") {
-        return;
-      }
+function tellTime() {
+  addMessage(
+    "Desmond",
+    "The current time is " + new Date().toLocaleTimeString() + ".",
+    "desmond"
+  );
+}
 
-      addMessage("Troy", text, "user");
-      userInput.value = "";
+/* =========================
+   MEMORY
+========================= */
 
-      const lowerText = text.toLowerCase();
-      let response = "";
+function saveMemory() {
+  const input = document.getElementById("memoryInput");
+  const text = input.value.trim();
 
-      if (
-        lowerText.includes("hello") ||
-        lowerText.includes("hi desmond")
-      ) {
-        response = "Hello, Troy. Good to see you.";
-      } else if (lowerText.includes("what time")) {
-        response = "The current time is " +
-          new Date().toLocaleTimeString() + ".";
-      } else if (lowerText.startsWith("calculate ")) {
-        const calculation = text.substring(10).trim();
+  if (!text) return;
 
-        if (/^[0-9+*/().% -]+$/.test(calculation)) {
-          try {
-            const result = Function(
-              '"use strict"; return (' + calculation + ')'
-            )();
+  if (!memories.includes(text)) {
+    memories.push(text);
+    saveData();
+    input.value = "";
+    addMessage("Desmond", "Memory saved.", "desmond");
+    showMemories();
+  } else {
+    addMessage("Desmond", "That memory already exists.", "desmond");
+  }
+}
 
-            if (Number.isFinite(result)) {
-              response = "The result is " + result + ".";
-            } else {
-              response = "I could not calculate that safely.";
-            }
-          } catch (error) {
-            response = "I could not understand that calculation.";
-          }
-        } else {
-          response = "Please use numbers and basic math operators.";
-        }
-      } else {
-        response =
-          "I received your message, Troy. " +
-          "My full AI connection has not been added yet, " +
-          "but this is the beginning of Project Desmond.";
-      }
+function getMemoryText() {
+  if (memories.length === 0) {
+    return "My memory is empty.";
+  }
 
-      setTimeout(function() {
-        addMessage("Desmond", response, "desmond");
-      }, 300);
+  return "Here is what I remember:\n\n" +
+    memories.map(function(memory, index) {
+      return (index + 1) + ". " + memory;
+    }).join("\n");
+}
+
+function showMemories() {
+  const list = document.getElementById("memoryList");
+  list.innerHTML = "";
+
+  if (memories.length === 0) {
+    list.textContent = "No saved memories.";
+    return;
+  }
+
+  memories.forEach(function(memory, index) {
+    const item = document.createElement("div");
+    item.className = "item";
+
+    const text = document.createElement("span");
+    text.textContent = memory;
+
+    const button = document.createElement("button");
+    button.textContent = "Delete";
+    button.onclick = function() {
+      memories.splice(index, 1);
+      saveData();
+      showMemories();
+    };
+
+    item.appendChild(button);
+    item.appendChild(text);
+    list.appendChild(item);
+  });
+}
+
+function clearMemories() {
+  if (!confirm("Delete all saved memories?")) return;
+
+  memories = [];
+  saveData();
+  showMemories();
+}
+
+/* =========================
+   NOTES
+========================= */
+
+function saveNote() {
+  const input = document.getElementById("noteInput");
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  notes.push({
+    text: text,
+    created: new Date().toLocaleString()
+  });
+
+  saveData();
+  input.value = "";
+  showNotes();
+}
+
+function showNotes() {
+  const list = document.getElementById("noteList");
+  list.innerHTML = "";
+
+  if (notes.length === 0) {
+    list.textContent = "No saved notes.";
+    return;
+  }
+
+  notes.forEach(function(note, index) {
+    const item = document.createElement("div");
+    item.className = "item";
+
+    const button = document.createElement("button");
+    button.textContent = "Delete";
+    button.onclick = function() {
+      notes.splice(index, 1);
+      saveData();
+      showNotes();
+    };
+
+    item.appendChild(button);
+
+    const text = document.createElement("div");
+    text.textContent = note.text + "\nSaved: " + note.created;
+
+    item.appendChild(text);
+    list.appendChild(item);
+  });
+}
+
+/* =========================
+   REMINDERS
+========================= */
+
+function saveReminder() {
+  const textInput = document.getElementById("reminderInput");
+  const timeInput = document.getElementById("reminderTime");
+
+  const text = textInput.value.trim();
+  const time = timeInput.value;
+
+  if (!text || !time) {
+    alert("Enter a reminder and choose a time.");
+    return;
+  }
+
+  reminders.push({
+    text: text,
+    time: time,
+    completed: false
+  });
+
+  saveData();
+
+  textInput.value = "";
+  timeInput.value = "";
+
+  showReminders();
+}
+
+function showReminders() {
+  const list = document.getElementById("reminderList");
+  list.innerHTML = "";
+
+  if (reminders.length === 0) {
+    list.textContent = "No saved reminders.";
+    return;
+  }
+
+  reminders.forEach(function(reminder, index) {
+    const item = document.createElement("div");
+    item.className = "item";
+
+    const button = document.createElement("button");
+    button.textContent = "Delete";
+    button.onclick = function() {
+      reminders.splice(index, 1);
+      saveData();
+      showReminders();
+    };
+
+    item.appendChild(button);
+
+    const text = document.createElement("div");
+    text.textContent =
+      reminder.text + "\nTime: " +
+      new Date(reminder.time).toLocaleString();
+
+    item.appendChild(text);
+    list.appendChild(item);
+  });
+}
+
+/* =========================
+   CALCULATOR
+========================= */
+
+function calculateExpression(expression) {
+  if (!/^[0-9+\-*/().%\s]+$/.test(expression)) {
+    return "Please use basic numbers and math operators only.";
+  }
+
+  try {
+    const result = Function(
+      '"use strict"; return (' + expression + ")"
+    )();
+
+    if (!Number.isFinite(result)) {
+      return "That calculation did not produce a valid number.";
     }
 
-    userInput.addEventListener("keydown", function(event) {
-      if (event.key === "Enter") {
-        sendMessage();
-      }
-    });
-  </script>
+    return "The result is " + result + ".";
+  } catch (error) {
+    return "I could not understand that calculation.";
+  }
+}
+
+function calculate() {
+  const input = document.getElementById("calculatorInput");
+  const resultBox = document.getElementById("calculatorResult");
+
+  const expression = input.value.trim();
+
+  if (!expression) return;
+
+  resultBox.textContent = calculateExpression(expression);
+  resultBox.classList.remove("hidden");
+}
+
+/* =========================
+   CLEAR CHAT
+========================= */
+
+function clearChat() {
+  document.getElementById("chat").innerHTML = "";
+
+  addMessage(
+    "Desmond",
+    "Chat cleared. My saved memories, notes, and reminders remain.",
+    "desmond"
+  );
+}
+
+/* =========================
+   STARTUP
+========================= */
+
+showMemories();
+showNotes();
+showReminders();
+</script>
+
 </body>
-    </html>
+</html>
