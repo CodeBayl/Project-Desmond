@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Desmond</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #08111f;
+      color: white;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #102a4c;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #2389da;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    header p {
+      color: #b7d8f5;
+      margin: 8px 0 0;
+    }
+
+    #clock {
+      text-align: center;
+      font-size: 18px;
+      color: #7fc8ff;
+      padding: 15px;
+    }
+
+    main {
+      max-width: 650px;
+      margin: auto;
+      padding: 15px;
+    }
+
+    #chat {
+      height: 400px;
+      overflow-y: auto;
+      background: #101d30;
+      border: 1px solid #284766;
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    .message {
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .desmond {
+      background: #173b61;
+      border-left: 4px solid #39a5ff;
+    }
+
+    .user {
+      background: #293344;
+      border-left: 4px solid #9caac0;
+    }
+
+    .label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    #userInput {
+      flex: 1;
+      min-width: 0;
+      padding: 14px;
+      border: 1px solid #45617d;
+      border-radius: 8px;
+      background: #17263a;
+      color: white;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      background: #1683d8;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #35a4ff;
+    }
+
+    .quick-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .quick-buttons button {
+      background: #24476b;
+      font-size: 13px;
+    }
+
+    footer {
+      text-align: center;
+      color: #7893ad;
+      padding: 20px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>PROJECT DESMOND</h1>
+    <p>Your personal AI assistant</p>
+  </header>
+
+  <div id="clock">Loading time...</div>
+
+  <main>
+    <div id="chat">
+      <div class="message desmond">
+        <div class="label">Desmond</div>
+        Hello, Troy. My first prototype is online. What can I help you with?
+      </div>
+    </div>
+
+    <div class="input-area">
+      <input
+        id="userInput"
+        type="text"
+        placeholder="Talk to Desmond..."
+        autocomplete="off"
+      >
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <div class="quick-buttons">
+      <button onclick="ask('What time is it?')">Time</button>
+      <button onclick="ask('Hello Desmond')">Say hello</button>
+      <button onclick="ask('Calculate 25 + 17')">Calculator</button>
+    </div>
+  </main>
+
+  <footer>
+    Project Desmond v0.1 — Prototype
+  </footer>
+
+  <script>
+    const chat = document.getElementById("chat");
+    const userInput = document.getElementById("userInput");
+
+    function updateClock() {
+      const now = new Date();
+
+      document.getElementById("clock").textContent =
+        "Current time: " + now.toLocaleTimeString();
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function addMessage(sender, text, type) {
+      const message = document.createElement("div");
+      message.className = "message " + type;
+
+      const label = document.createElement("div");
+      label.className = "label";
+      label.textContent = sender;
+
+      const content = document.createElement("div");
+      content.textContent = text;
+
+      message.appendChild(label);
+      message.appendChild(content);
+      chat.appendChild(message);
+
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function ask(text) {
+      userInput.value = text;
+      sendMessage();
+    }
+
+    function sendMessage() {
+      const text = userInput.value.trim();
+
+      if (text === "") {
+        return;
+      }
+
+      addMessage("Troy", text, "user");
+      userInput.value = "";
+
+      const lowerText = text.toLowerCase();
+      let response = "";
+
+      if (
+        lowerText.includes("hello") ||
+        lowerText.includes("hi desmond")
+      ) {
+        response = "Hello, Troy. Good to see you.";
+      } else if (lowerText.includes("what time")) {
+        response = "The current time is " +
+          new Date().toLocaleTimeString() + ".";
+      } else if (lowerText.startsWith("calculate ")) {
+        const calculation = text.substring(10).trim();
+
+        if (/^[0-9+*/().% -]+$/.test(calculation)) {
+          try {
+            const result = Function(
+              '"use strict"; return (' + calculation + ')'
+            )();
+
+            if (Number.isFinite(result)) {
+              response = "The result is " + result + ".";
+            } else {
+              response = "I could not calculate that safely.";
+            }
+          } catch (error) {
+            response = "I could not understand that calculation.";
+          }
+        } else {
+          response = "Please use numbers and basic math operators.";
+        }
+      } else {
+        response =
+          "I received your message, Troy. " +
+          "My full AI connection has not been added yet, " +
+          "but this is the beginning of Project Desmond.";
+      }
+
+      setTimeout(function() {
+        addMessage("Desmond", response, "desmond");
+      }, 300);
+    }
+
+    userInput.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+    </html>
